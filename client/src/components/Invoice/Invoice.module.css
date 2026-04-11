@@ -1,0 +1,126 @@
+/* InvoicerPro - Final Premium Dark Theme */
+
+.pageContainer {
+  background-color: #0f0f13 !important;
+  /* Sidebar ki jagah pakki karne ke liye margin-left */
+  margin-left: 260px !important; 
+  padding: 40px !important;
+  min-height: 100vh !important;
+  color: #e8e8f0 !important;
+  display: block !important;
+}
+
+.invoiceLayout {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 30px !important;
+  max-width: 1300px !important;
+  margin: 0 auto !important;
+  align-items: flex-start !important;
+}
+
+/* Left side ka main card jisme form hai */
+.formCard {
+  flex: 1 !important;
+  background: #1a1a24 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 20px !important;
+  padding: 40px !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Right side ka sticky panel */
+.sidePanel {
+  width: 350px !important;
+  background: #1a1a24 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  padding: 25px !important;
+  position: sticky !important;
+  top: 40px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+.sectionTitle {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  color: #7c6af7 !important;
+  margin-bottom: 20px !important;
+  margin-top: 35px !important;
+}
+
+.sectionTitle:first-child {
+  margin-top: 0 !important;
+}
+
+/* Item Row Grid Fix */
+.itemRow {
+  display: grid !important;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr 0.5fr !important;
+  gap: 15px !important;
+  align-items: center !important;
+  padding: 15px 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Summary Calculations */
+.totalRow {
+  display: flex !important;
+  justify-content: space-between !important;
+  margin-bottom: 12px !important;
+  color: #9898b0 !important;
+  font-size: 0.95rem !important;
+}
+
+.totalRowBold {
+  display: flex !important;
+  justify-content: space-between !important;
+  margin-top: 20px !important;
+  padding-top: 15px !important;
+  border-top: 1px dashed rgba(255, 255, 255, 0.2) !important;
+  font-size: 1.3rem !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+}
+
+/* Invoice Number Styling (Dashed Line) */
+.invoiceNumberInput {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px dashed #7c6af7 !important;
+  color: white !important;
+  font-size: 1.6rem !important;
+  font-weight: 800 !important;
+  padding: 5px !important;
+  width: 140px !important;
+  text-align: right !important;
+}
+
+/* Responsive for Mobile */
+@media (max-width: 1150px) {
+  .pageContainer {
+    margin-left: 0 !important;
+    padding: 20px !important;
+  }
+  .invoiceLayout {
+    flex-direction: column !important;
+  }
+  .sidePanel {
+    width: 100% !important;
+    position: static !important;
+  }
+}
+
+/* Textarea Note Box */
+textarea {
+  width: 100% !important;
+  background: #111119 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 15px !important;
+  color: white !important;
+  font-family: inherit !important;
+  resize: vertical !important;
+}

@@ -1,0 +1,373 @@
+/* ============================================
+   InvoicerPro - Dark Theme Global Styles
+   ============================================ */
+
+:root {
+  --bg-primary: #0f0f13;
+  --bg-secondary: #1a1a24;
+  --bg-card: #1e1e2e;
+  --bg-elevated: #252535;
+  --accent: #6c63ff;
+  --accent-hover: #857dff;
+  --accent-glow: rgba(108, 99, 255, 0.25);
+  --text-primary: #e8e8f0;
+  --text-secondary: #9898b0;
+  --text-muted: #5a5a72;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-accent: rgba(108, 99, 255, 0.4);
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-accent: 0 4px 24px rgba(108, 99, 255, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================
+   NAVBAR (side nav)
+   ============================================ */
+.navbar {
+  position: fixed;
+  background: var(--bg-secondary);
+  transition: width 0.3s ease;
+  overflow: hidden;
+  width: 4.5rem;
+  border-right: 1px solid var(--border);
+  box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+  z-index: 1000;
+  top: 0;
+  bottom: 0;
+}
+
+.navbar:hover {
+  width: 14rem;
+}
+
+.navbar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.nav-item {
+  width: 100%;
+}
+
+.nav-item:last-child {
+  margin-top: auto;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 0 1.1rem;
+  white-space: nowrap;
+  gap: 1rem;
+  border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: rgba(108, 99, 255, 0.1);
+  border-left-color: var(--accent);
+}
+
+.nav-link svg {
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.link-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.logo {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+}
+
+.logo .nav-link {
+  height: 5rem;
+  border-left: none;
+}
+
+.logo-text img {
+  border-radius: 10px;
+  filter: brightness(1.1);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 60px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px 0 5rem;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+
+.header-bar-public {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+
+/* ============================================
+   MUI OVERRIDES - Dark Theme
+   ============================================ */
+.MuiPaper-root {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+.MuiTableCell-head {
+  padding: 10px !important;
+  padding-left: 10px !important;
+  background-color: var(--bg-elevated) !important;
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.MuiTableCell-body {
+  padding: 10px !important;
+  padding-left: 10px !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.MuiTableRow-root:hover {
+  background-color: rgba(108, 99, 255, 0.05) !important;
+}
+
+.MuiPaper-elevation1 {
+  box-shadow: none !important;
+}
+
+.MuiInputBase-root {
+  color: var(--text-primary) !important;
+}
+
+.MuiInputLabel-root {
+  color: var(--text-secondary) !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: var(--border) !important;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--accent) !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--accent) !important;
+}
+
+.MuiMenuItem-root {
+  color: var(--text-primary) !important;
+}
+
+.MuiMenuItem-root:hover {
+  background-color: rgba(108, 99, 255, 0.12) !important;
+}
+
+.MuiButton-root {
+  text-transform: none !important;
+  font-weight: 500 !important;
+}
+
+.MuiAvatar-root {
+  background-color: var(--accent) !important;
+}
+
+.MuiCircularProgress-root {
+  color: var(--accent) !important;
+}
+
+.tb-container .Mui-focused {
+  background-color: var(--bg-elevated);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-radius: 4px;
+}
+
+/* ============================================
+   PROGRESS BUTTON
+   ============================================ */
+.pb-container {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  margin: 5px 7px;
+}
+.pb-container .pb-button {
+  background: var(--accent);
+  border: none;
+  border-radius: 27px;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.7em 1em;
+  text-align: center;
+  height: 54px;
+  width: 100%;
+  outline: none;
+  transition: background 0.3s, width 0.3s, border-radius 0.3s;
+  font-weight: 600;
+}
+.pb-container .pb-button:hover {
+  background: var(--accent-hover);
+}
+.pb-container .pb-button span {
+  display: inherit;
+  transition: opacity 0.3s 0.1s;
+  font-size: 16px;
+  font-weight: 500;
+}
+.pb-container .pb-button svg {
+  height: 54px;
+  width: 54px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.pb-container .pb-button svg path {
+  opacity: 0;
+  fill: none;
+}
+.pb-container .pb-button svg.pb-progress-circle {
+  animation: spin 0.9s infinite cubic-bezier(0.085, 0.26, 0.935, 0.71);
+}
+.pb-container .pb-button svg.pb-progress-circle path {
+  stroke: #fff;
+  stroke-width: 5;
+}
+.pb-container .pb-button svg.pb-checkmark path,
+.pb-container .pb-button svg.pb-cross path {
+  stroke: #fff;
+}
+@keyframes spin {
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ============================================
+   PAYMENT HISTORY ACCORDION
+   ============================================ */
+.tab input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+.tabs {
+  border-radius: 10px;
+  overflow: hidden;
+  width: 63%;
+  margin: 10px auto;
+  border: 1px solid var(--border);
+}
+@media only screen and (max-width: 600px) {
+  .tabs { width: 95%; }
+}
+.tab {
+  width: 100%;
+  color: var(--text-primary);
+  overflow: hidden;
+}
+.tab-label {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  background: var(--bg-elevated);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.tab-label:hover {
+  background: rgba(108, 99, 255, 0.15);
+}
+.tab-label::after {
+  content: "\276F";
+  width: 1em;
+  height: 1em;
+  text-align: center;
+  transition: all 0.35s;
+}
+.tab-content {
+  max-height: 0;
+  padding: 0 1em;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  transition: all 0.35s;
+}
+.tab-close {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1em;
+  font-size: 0.75em;
+  background: var(--bg-secondary);
+  cursor: pointer;
+}
+.tab-close:hover {
+  background: var(--bg-elevated);
+}
+input:checked + .tab-label {
+  background: rgba(108, 99, 255, 0.2);
+  color: var(--accent-hover);
+}
+input:checked + .tab-label::after {
+  transform: rotate(90deg);
+}
+input:checked ~ .tab-content {
+  max-height: 100vh;
+  padding: 1em;
+}
+
+.customInputs input:focus,
+textarea:focus {
+  outline: 0 !important;
+  border-bottom-color: var(--accent) !important;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }

@@ -1,0 +1,242 @@
+/* Enhanced Page Container with Depth */
+.pageContainer {
+  background: linear-gradient(
+    15deg,
+    /* rgb(150, 7, 7) 20%, */
+    rgba(43, 27, 91, 0.95) 60%,
+    rgb(106, 26, 26) 0%
+    
+  );
+  background-size: 400% 400%;
+  padding: 30px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  animation: gradientFlow 15s ease infinite;
+  position: relative;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Enhanced Particle System */
+.pageContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 1%, transparent 7%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.3) 2%, transparent 8%),
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.5) 1%, transparent 6%);
+  animation: 
+    particles 25s linear infinite,
+    particlePulse 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes particles {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-100vh) rotate(180deg); }
+}
+
+@keyframes particlePulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+/* Enhanced Cards with Dynamic Lighting */
+.autoGrid {
+  --auto-grid-min-size: 18rem;
+  width: 90%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
+  grid-gap: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.listItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 160px;
+  height: 150px;
+  padding: 1.5rem;
+  border-radius: 25px;
+  background: linear-gradient(145deg, 
+    rgba(216, 11, 11, 0.664), 
+    rgba(47, 20, 154, 0.856));
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255,255,255,0.1);
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 
+    0 12px 40px rgba(0,0,0,0.3),
+    inset 0 0 20px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.listItem::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(255,255,255,0.1) 50%,
+    transparent 60%
+  );
+  animation: cardShine 6s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes cardShine {
+  0% { transform: rotate(45deg) translateX(-150%); }
+  100% { transform: rotate(45deg) translateX(150%); }
+}
+
+.listItem:hover {
+  transform: 
+    translateY(-8px) 
+    rotateX(3deg) 
+    rotateY(3deg)
+    scale(1.05);
+  box-shadow: 
+    0 20px 50px rgba(0,0,0,0.4),
+    inset 0 0 30px rgba(255,255,255,0.1);
+}
+
+/* Optimized Table with 3D Perspective */
+.table {
+  margin: 30px auto;
+  width: 85%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 15px;
+  box-shadow: 
+    0 12px 40px rgba(0,0,0,0.1),
+    inset 0 0 20px rgba(255,255,255,0.2),
+    4px 4px 10px rgba(0,0,0,0.05);
+  transform: perspective(800px) rotateX(2deg);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.table:hover {
+  transform: perspective(800px) rotateX(1deg) translateY(-3px);
+  box-shadow: 
+    0 15px 45px rgba(0,0,0,0.15),
+    inset 0 0 25px rgba(255,255,255,0.25),
+    5px 5px 12px rgba(0,0,0,0.1);
+}
+
+.table th {
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: white;
+  padding: 14px 16px;
+  font-size: 0.85em;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  position: relative;
+  border-bottom: 3px solid rgba(0,0,0,0.1);
+}
+
+.table td {
+  padding: 12px 16px;
+  font-size: 0.9em;
+  background: rgba(255,255,255,0.95);
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.tableRow:hover td {
+  background: rgba(245,245,245,0.98);
+  transform: translateX(3px) rotateY(2deg);
+  box-shadow: 
+    2px 2px 8px rgba(0,0,0,0.05),
+    -1px -1px 4px rgba(255,255,255,0.6);
+}
+
+.table button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.15),
+    0 0 8px rgba(25,118,210,0.3);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.table button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(255,255,255,0.3) 50%,
+    transparent 60%
+  );
+  animation: buttonShine 4s infinite linear;
+}
+
+@keyframes buttonShine {
+  0% { transform: rotate(45deg) translateX(-150%); }
+  100% { transform: rotate(45deg) translateX(150%); }
+}
+
+.table button:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 
+    0 4px 10px rgba(0,0,0,0.2),
+    0 0 15px rgba(25,118,210,0.4);
+}
+
+/* Chart Section Enhancement */
+section > div:has(> .recharts-wrapper) {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 
+    0 15px 45px rgba(0,0,0,0.1),
+    inset 0 0 20px rgba(255,255,255,0.2);
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 20px;
+  transform: perspective(1000px) rotateX(1deg);
+  transition: all 0.3s ease;
+}
+
+section > div:has(> .recharts-wrapper):hover {
+  transform: perspective(1000px) rotateX(0.5deg) translateY(-2px);
+  box-shadow: 
+    0 20px 50px rgba(0,0,0,0.15),
+    inset 0 0 25px rgba(255,255,255,0.25);
+}

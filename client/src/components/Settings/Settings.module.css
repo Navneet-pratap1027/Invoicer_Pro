@@ -1,0 +1,41 @@
+/* InvoicerPro Settings - Dark Theme */
+
+.pageContainer {
+  background: #0f0f13;
+  padding: 30px 30px 30px 5.5rem;
+  min-height: 100vh;
+}
+
+.settingsCard {
+  background: #1a1a24;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #e8e8f0;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #9898b0;
+  margin-bottom: 28px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin: 24px 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .pageContainer {
+    padding: 20px 16px;
+  }
+}
