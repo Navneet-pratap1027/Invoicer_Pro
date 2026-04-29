@@ -8,23 +8,11 @@ import { toCommas } from '../../utils/utils'
 import styles from './InvoiceDetails.module.css'
 import moment from 'moment'
 
-// ✅ MUI v4 Core Imports (Design components hamesha 'core' se)
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import { Container, Grid, Divider } from '@material-ui/core';
-
-// ✅ MUI v4 Icons (Sirf icons yahan se)
+// MUI Icons
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
+import { Grid, Divider } from '@material-ui/core';
 import Spinner from '../Spinner/Spinner'
 import ProgressButton from 'react-progress-button'
 import axios from 'axios';
@@ -55,21 +43,6 @@ const InvoiceDetails = () => {
     const [sendStatus, setSendStatus] = useState(null)
     const [downloadStatus, setDownloadStatus] = useState(null)
     const [open, setOpen] = useState(false)
-
-    const useStyles = makeStyles((theme) => ({
-        root: { display: 'flex', '& > *': { margin: theme.spacing(1) } },
-        large: { width: theme.spacing(12), height: theme.spacing(12) },
-        table: { minWidth: 650 },
-        headerContainer: {
-            paddingTop: theme.spacing(1),
-            paddingLeft: theme.spacing(5),
-            paddingRight: theme.spacing(1),
-            backgroundColor: '#f2f2f2',
-            borderRadius: '10px 10px 0px 0px'
-        }
-    }));
-
-    const classes = useStyles()
 
     useEffect(() => {
         dispatch(getInvoice(id));
@@ -127,132 +100,154 @@ const InvoiceDetails = () => {
         .catch(() => setSendStatus('error'))
     }
 
-    const checkStatus = () => {
-        if (totalAmountReceived >= total) return "green"
-        if (status === "Partial") return "#1976d2"
-        if (status === "Paid") return "green"
-        return "red"
-    }
-
     if (!invoice) return <Spinner />
 
     return (
-        <div className={styles.PageLayout}>
+        <div className={styles.pageContainer}>
+            
+            {/* ✅ ACTION BAR: Proper Grouping & Hierarchy */}
             {invoice?.creator?.includes(user?.result?._id || user?.result?.googleId) && (
-                <div className={styles.buttons}>
-                    <ProgressButton onClick={sendPdf} state={sendStatus} onSuccess={() => openSnackbar("Invoice sent successfully")}>
-                        Send to Customer
-                    </ProgressButton>
-                    <ProgressButton onClick={createAndDownloadPdf} state={downloadStatus}>
-                        Download PDF
-                    </ProgressButton>
-                    <button className={styles.btn} onClick={() => editInvoice(invoiceData._id)}> 
-                        <BorderColorIcon style={{ height: '18px', width: '18px', marginRight: '10px' }} /> Edit Invoice
+                <div className={styles.actionBar}>
+                    
+                    {/* LEFT SIDE: Minimal Edit Button */}
+                    <button 
+                        className={styles.statusBadge} 
+                        style={{ cursor: 'pointer', background: 'rgba(255,255,255,0.08)', color: '#9898b0', border: 'none', marginRight: 'auto', padding: '8px 15px' }} 
+                        onClick={() => editInvoice(invoiceData._id)}
+                    > 
+                        <BorderColorIcon style={{ fontSize: '16px', marginRight: '5px' }} /> Edit
                     </button>
-                    <button className={styles.btn} onClick={() => setOpen((prev) => !prev)}> 
-                        <MonetizationOnIcon style={{ height: '18px', width: '18px', marginRight: '10px' }} /> Record Payment
-                    </button>
+
+                    {/* RIGHT SIDE: Grouped Actions */}
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        
+                        {/* Tertiary: Record Payment */}
+                        <button 
+                            className={styles.statusBadge} 
+                            style={{ cursor: 'pointer', background: 'transparent', color: '#3b82f6', border: '1px solid #3b82f6', padding: '8px 15px' }} 
+                            onClick={() => setOpen((prev) => !prev)}
+                        > 
+                            <MonetizationOnIcon style={{ fontSize: '16px', marginRight: '5px' }} /> Record Payment
+                        </button>
+
+                        {/* Secondary: Download PDF */}
+                        <div className={styles.secondaryBtn}>
+                            <ProgressButton onClick={createAndDownloadPdf} state={downloadStatus}>
+                                Download PDF
+                            </ProgressButton>
+                        </div>
+
+                        {/* Primary: Send to Customer (Solid Blue) */}
+                        <div className={styles.primaryBtn}>
+                            <ProgressButton onClick={sendPdf} state={sendStatus} onSuccess={() => openSnackbar("Invoice sent successfully")}>
+                                Send to Customer
+                            </ProgressButton>
+                        </div>
+                    </div>
                 </div>
             )}
 
+            {/* Main Invoice Card */}
+            <div className={styles.invoiceCard}>
+                
+                {/* Header Section */}
+                <div className={styles.invoiceHeader}>
+                    <div>
+                        <div onClick={() => history.push('/settings')} style={{ cursor: 'pointer', marginBottom: '10px' }}>
+                            {company?.logo ? 
+                                <img src={company?.logo} alt="Logo" style={{maxHeight: '60px'}} /> 
+                                : <h2 className={styles.invoiceTitle}>{company?.businessName || "Set Business Name"}</h2>
+                            }
+                        </div>
+                        <p className={styles.invoiceNumber}>Invoice NO: {invoiceData?.invoiceNumber}</p>
+                    </div>
+                    
+                    <div style={{ textAlign: 'right' }}>
+                        <div className={`${styles.statusBadge} ${totalAmountReceived >= total ? styles.statusPaid : styles.statusUnpaid}`}>
+                            {totalAmountReceived >= total ? 'PAID' : status.toUpperCase()}
+                        </div>
+                        <h1 style={{ color: '#e8e8f0', margin: '15px 0 5px 0' }}>{type.toUpperCase()}</h1>
+                        <p className={styles.sectionLabel}>Balance Due: {currency} {toCommas(total - totalAmountReceived)}</p>
+                    </div>
+                </div>
+
+                <Divider style={{ backgroundColor: 'rgba(255,255,255,0.06)', margin: '30px 0' }} />
+
+                {/* Billing Details */}
+                <Grid container spacing={4}>
+                    <Grid item xs={12} md={6}>
+                        <div style={{ marginBottom: '25px' }}>
+                            <p className={styles.sectionLabel}>From</p>
+                            <p className={styles.sectionValue}>{company?.businessName || "Update Profile in Settings"}</p>
+                            <p style={{color: '#9898b0', fontSize: '0.9rem'}}>{company?.email}</p>
+                            <p style={{color: '#9898b0', fontSize: '0.9rem'}}>{company?.phoneNumber}</p>
+                        </div>
+                        <div>
+                            <p className={styles.sectionLabel}>Bill To</p>
+                            <p className={styles.sectionValue}>{client?.name}</p>
+                            <p style={{color: '#9898b0', fontSize: '0.9rem'}}>{client?.email}</p>
+                            <p style={{color: '#9898b0', fontSize: '0.9rem'}}>{client?.address}</p>
+                        </div>
+                    </Grid>
+                    
+                    <Grid item xs={12} md={6} style={{ textAlign: 'right' }}>
+                        <p className={styles.sectionLabel}>Date Issued</p>
+                        <p className={styles.sectionValue}>{moment(invoice?.createdAt).format("DD MMM YYYY")}</p>
+                        <br />
+                        <p className={styles.sectionLabel}>Due Date</p>
+                        <p className={styles.sectionValue}>{moment(selectedDate).format("DD MMM YYYY")}</p>
+                    </Grid>
+                </Grid>
+
+                {/* Items Table */}
+                <table className={styles.itemsTable}>
+                    <thead>
+                        <tr>
+                            <th>Item Description</th>
+                            <th style={{textAlign: 'right'}}>Qty</th>
+                            <th style={{textAlign: 'right'}}>Price</th>
+                            <th style={{textAlign: 'right'}}>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {invoiceData?.items?.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.itemName}</td>
+                                <td style={{textAlign: 'right'}}>{item.quantity}</td>
+                                <td style={{textAlign: 'right'}}>{toCommas(item.unitPrice)}</td>
+                                <td style={{textAlign: 'right'}}>{toCommas((item.quantity * item.unitPrice) - (item.quantity * item.unitPrice * item.discount / 100))}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+                {/* Totals Section */}
+                <div className={styles.totalsSection}>
+                    <div className={styles.totalRow}>
+                        <span>Subtotal:</span>
+                        <span style={{color: '#e8e8f0'}}>{toCommas(subTotal)}</span>
+                    </div>
+                    <div className={styles.totalRow}>
+                        <span>VAT ({rates}%):</span>
+                        <span style={{color: '#e8e8f0'}}>{toCommas(vat)}</span>
+                    </div>
+                    <div className={styles.grandTotal}>
+                        <span>Total ({currency}):</span>
+                        <span style={{color: '#22c55e'}}>{currency} {toCommas(total)}</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Payment History */}
             {invoice?.paymentRecords.length !== 0 && (
-                <PaymentHistory paymentRecords={invoiceData?.paymentRecords} />
+                <div style={{marginTop: '30px'}}>
+                    <PaymentHistory paymentRecords={invoiceData?.paymentRecords} />
+                </div>
             )}
         
             <Modal open={open} setOpen={setOpen} invoice={invoice} />
-            
-            <div className={styles.invoiceLayout}>
-                <Container className={classes.headerContainer}>
-                    <Grid container justifyContent="space-between" style={{ padding: '30px 0px' }}>
-                        <Grid item onClick={() => history.push('/settings')} style={{ cursor: 'pointer' }}>
-                            {company?.logo ? <img src={company?.logo} alt="Logo" className={styles.logo} /> : <h2>{company?.businessName}</h2>}
-                        </Grid>
-                        <Grid item style={{ marginRight: 40, textAlign: 'right' }}>
-                            <Typography style={{ fontSize: 45, fontWeight: 700, color: 'gray' }}>
-                                {Number(total - totalAmountReceived) <= 0 ? 'Receipt' : type}
-                            </Typography>
-                            <Typography variant="overline" style={{ color: 'gray' }}>No: </Typography>
-                            <Typography variant="body2">{invoiceData?.invoiceNumber}</Typography>
-                        </Grid>
-                    </Grid >
-                </Container>
-                <Divider />
-                <Container>
-                    <Grid container justifyContent="space-between" style={{ marginTop: '40px' }} >
-                        <Grid item>
-                            <Container style={{ marginBottom: '20px' }}>
-                                <Typography variant="overline" style={{ color: 'gray' }} gutterBottom>From</Typography>
-                                <Typography variant="subtitle2">{company?.businessName}</Typography>
-                                <Typography variant="body2">{company?.email}</Typography>
-                                <Typography variant="body2">{company?.phoneNumber}</Typography>
-                            </Container>
-                            <Container>
-                                <Typography variant="overline" style={{ color: 'gray' }} gutterBottom>Bill to</Typography>
-                                <Typography variant="subtitle2" gutterBottom>{client?.name}</Typography>
-                                <Typography variant="body2">{client?.email}</Typography>
-                                <Typography variant="body2">{client?.address}</Typography>
-                            </Container>
-                        </Grid>
-                        <Grid item style={{ marginRight: 20, textAlign: 'right' }}>
-                            <Typography variant="overline" style={{ color: 'gray' }} gutterBottom>Status</Typography>
-                            <Typography variant="h6" gutterBottom style={{ color: checkStatus() }}>
-                                {totalAmountReceived >= total ? 'Paid' : status}
-                            </Typography>
-                            <Typography variant="overline" style={{ color: 'gray' }} gutterBottom>Date</Typography>
-                            <Typography variant="body2" gutterBottom>{moment(invoice?.createdAt).format("MMM Do YYYY")}</Typography>
-                            <Typography variant="overline" style={{ color: 'gray' }} gutterBottom>Due Date</Typography>
-                            <Typography variant="body2" gutterBottom>{moment(selectedDate).format("MMM Do YYYY")}</Typography>
-                            <Typography variant="overline" gutterBottom>Amount</Typography>
-                            <Typography variant="h6" gutterBottom>{currency} {toCommas(total)}</Typography>
-                        </Grid>
-                    </Grid>
-                </Container>
-
-                <TableContainer component={Paper} elevation={0}>
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Item</TableCell>
-                                <TableCell align="right">Qty</TableCell>
-                                <TableCell align="right">Price</TableCell>
-                                <TableCell align="right">Disc(%)</TableCell>
-                                <TableCell align="right">Amount</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {invoiceData?.items?.map((itemField, index) => (
-                                <TableRow key={index}>
-                                    <TableCell style={{ width: '40%' }}>
-                                        <InputBase style={{ width: '100%' }} value={itemField.itemName} readOnly />
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <InputBase value={itemField?.quantity} readOnly />
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <InputBase value={itemField?.unitPrice} readOnly />
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <InputBase value={itemField?.discount} readOnly />
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <InputBase value={(itemField?.quantity * itemField.unitPrice) - (itemField.quantity * itemField.unitPrice) * itemField.discount / 100} readOnly />
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-
-                <div className={styles.invoiceSummary}>
-                    <div className={styles.summaryItem}><p>Subtotal:</p><h4>{toCommas(subTotal)}</h4></div>
-                    <div className={styles.summaryItem}><p>{`VAT(${rates}%):`}</p><h4>{toCommas(vat)}</h4></div>
-                    <div className={styles.summaryItem}><p>Total</p><h4>{currency} {toCommas(total)}</h4></div>
-                    <div className={styles.summaryItem}><p>Paid</p><h4>{currency} {toCommas(totalAmountReceived)}</h4></div>
-                    <div className={styles.summaryItem}><p>Balance</p><h4 style={{ color: "black", fontSize: "18px" }}>{currency} {toCommas(total - totalAmountReceived)}</h4></div>
-                </div>
-            </div>
         </div>
     )
 }
 
-export default InvoiceDetails
+export default InvoiceDetails;

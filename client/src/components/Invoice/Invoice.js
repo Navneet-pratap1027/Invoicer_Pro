@@ -76,12 +76,22 @@ const Invoice = () => {
 
     useEffect(() => { setStatus(type === 'Receipt' ? 'Paid' : 'Unpaid'); }, [type]);
 
-    useEffect(() => {
-        const sub = invoiceData.items.reduce((acc, item) => acc + (item.quantity * item.unitPrice - (item.quantity * item.unitPrice * item.discount / 100)), 0);
-        setSubTotal(sub);
-        setVat((rates / 100) * sub);
-        setTotal(sub + ((rates / 100) * sub));
-    }, [invoiceData, rates]);
+ useEffect(() => {
+    // Subtotal calculate 
+    const sub = invoiceData.items.reduce((acc, item) => 
+        acc + (Number(item.quantity) * Number(item.unitPrice) - 
+        (Number(item.quantity) * Number(item.unitPrice) * Number(item.discount) / 100)), 0
+    );
+
+    //  Tax
+    const calculatedVat = (Number(rates) / 100) * sub;
+    const finalTotal = sub + calculatedVat;
+
+    // 3. States update
+    setSubTotal(sub.toFixed(2));
+    setVat(calculatedVat.toFixed(2));
+    setTotal(finalTotal.toFixed(2));
+}, [invoiceData, rates]);
 
     const handleChange = (index, e) => {
         const values = [...invoiceData.items];

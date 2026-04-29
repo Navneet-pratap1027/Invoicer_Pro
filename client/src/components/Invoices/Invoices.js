@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
-// ✅ FIXED: Icons se hata kar Core folder mein dala
 import { makeStyles } from '@material-ui/core/styles'; 
 import {
   Table, TableBody, TableCell, TableHead, TableContainer,
@@ -10,7 +9,6 @@ import {
   DialogActions, DialogContent, DialogTitle, Button
 } from '@material-ui/core';
 
-// ✅ Icons sahi jagah se
 import DeleteOutlineRoundedIcon from '@material-ui/icons/DeleteOutlineRounded';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 
@@ -21,31 +19,27 @@ import { useSnackbar } from 'react-simple-snackbar';
 
 const useStyles = makeStyles((theme) => ({
   table: { minWidth: 500 },
-  tableCell: { fontSize: '16px', textAlign: 'center' },
+  tableCell: { fontSize: '14px', textAlign: 'center', padding: '12px' },
   editButton: {
-    backgroundColor: 'darkgreen',
-    color: 'white',
+    backgroundColor: '#e8f5e9',
+    color: 'darkgreen',
     margin: '2px',
-    '&:hover': {
-      backgroundColor: 'green',
-    },
+    '&:hover': { backgroundColor: '#c8e6c9' },
   },
   deleteButton: {
-    backgroundColor: 'darkred',
-    color: 'white',
+    backgroundColor: '#ffebee',
+    color: 'darkred',
     margin: '2px',
-    '&:hover': {
-      backgroundColor: 'red',
-    },
+    '&:hover': { backgroundColor: '#ffcdd2' },
   },
 }));
 
-const headerStyle = { textAlign: 'center', fontWeight: 'bold' };
+const headerStyle = { textAlign: 'center', fontWeight: 'bold', backgroundColor: '#f5f5f5' };
 
 const Invoices = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = history = useHistory();
+  const history = useHistory(); // ✅ Fixed syntax
   const user = JSON.parse(localStorage.getItem('profile'));
   const rows = useSelector(state => state.invoices.invoices);
   const isLoading = useSelector(state => state.invoices.isLoading);
@@ -80,9 +74,7 @@ const Invoices = () => {
     return null;
   }
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  if (isLoading) return <Spinner />;
 
   if (!rows || rows.length === 0) {
     return (
@@ -94,9 +86,9 @@ const Invoices = () => {
   }
 
   return (
-    <div style={{ paddingTop: '70px', paddingBottom: '50px' }}>
-      <Container style={{ width: '90%' }}>
-        <TableContainer component={Paper} elevation={1}>
+    <div style={{ paddingTop: '80px', paddingBottom: '50px' }}>
+      <Container style={{ width: '95%' }}>
+        <TableContainer component={Paper} elevation={2}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
@@ -111,19 +103,21 @@ const Invoices = () => {
 
             <TableBody>
               {rows.map((row) => (
-                <TableRow key={row._id}>
+                <TableRow key={row._id} hover>
                   <TableCell className={classes.tableCell}>{row.invoiceNumber}</TableCell>
-                  <TableCell className={classes.tableCell}>{row?.client?.name}</TableCell>
-                  <TableCell className={classes.tableCell}>{row.currency} {row.total?.toLocaleString()}</TableCell>
-                  <TableCell className={classes.tableCell}>{moment(row.dueDate).fromNow()}</TableCell>
+                  <TableCell className={classes.tableCell}>{row?.client?.name || 'No Name'}</TableCell>
+                  {/* ✅ Currency symbol handle kiya */}
+                  <TableCell className={classes.tableCell}>₹ {row.total?.toLocaleString()}</TableCell>
+                  <TableCell className={classes.tableCell}>{moment(row.dueDate).format('DD MMM YYYY')}</TableCell>
                   <TableCell className={classes.tableCell}>
                     <span style={{ 
-                      padding: '5px 15px', 
-                      borderRadius: '10px', 
-                      fontSize: '12px',
+                      padding: '4px 12px', 
+                      borderRadius: '20px', 
+                      fontSize: '11px',
                       fontWeight: 'bold',
-                      backgroundColor: row.status === 'Paid' ? '#a5ffcd' : 
-                                     row.status === 'Partial' ? '#baddff' : '#ffaa91'
+                      textTransform: 'uppercase',
+                      backgroundColor: row.status === 'Paid' ? '#e8f5e9' : '#fff3e0',
+                      color: row.status === 'Paid' ? '#2e7d32' : '#ef6c00'
                     }}>
                       {row.status}
                     </span>
@@ -142,13 +136,14 @@ const Invoices = () => {
           </Table>
         </TableContainer>
 
+        {/* Confirmation Dialog */}
         <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogContent>
-            <p>Are you sure you want to delete this invoice?</p>
+            <p>Are you sure you want to delete this invoice? This action cannot be undone.</p>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenConfirm(false)} color="default">Cancel</Button>
+          <DialogActions style={{ padding: '15px' }}>
+            <Button onClick={() => setOpenConfirm(false)} variant="outlined">Cancel</Button>
             <Button onClick={handleDelete} color="secondary" variant="contained">Delete</Button>
           </DialogActions>
         </Dialog>

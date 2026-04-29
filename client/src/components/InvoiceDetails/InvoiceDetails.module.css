@@ -17,13 +17,90 @@
 
 .actionBar {
   display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Sab kuch right align karne ke liye */
   gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 25px;
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+/* Edit button ko left side me push karne ke liye */
+.editBtn {
+  margin-right: auto !important; 
+}
+
+/* Sabhi buttons ka common base style (Size match karne ke liye) */
+.tertiaryBtn, 
+.actionBar button, 
+.actionBar :global(.react-progress-button) button {
+  height: 42px !important; /* Fixed height for all */
+  padding: 0 20px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: auto !important;
+}
+
+/* Specific Styles for Record Payment */
+.paymentBtn {
+  background: transparent !important;
+  color: #3b82f6 !important;
+  border: 1px solid rgba(59, 130, 246, 0.5) !important;
+}
+
+.paymentBtn:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Primary Button (Send to Customer) */
+.primaryBtn :global(.react-progress-button) button {
+  background-color: #3b82f6 !important; /* Solid Blue */
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  width: auto !important;
+  min-width: 160px;
+}
+
+/* Secondary Button (Download PDF) */
+.secondaryBtn :global(.react-progress-button) button {
+  background-color: transparent !important;
+  color: #3b82f6 !important;
+  border: 2px solid #3b82f6 !important; /* Outline Blue */
+  border-radius: 8px !important;
+  padding: 8px 20px !important;
+  width: auto !important;
+  min-width: 150px;
+}
+
+/* Tertiary Buttons (Payment & Edit) */
+.tertiaryBtn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #9898b0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.tertiaryBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Edit Button alag dikhne ke liye */
+.editBtn {
+  margin-right: auto; /* Isse Edit button left me chala jayega baaki right me */
+}
 .statusBadge {
   display: inline-flex;
   align-items: center;
