@@ -1,8 +1,5 @@
-/* InvoicerPro - Final Premium Dark Theme */
-
 .pageContainer {
   background-color: #0f0f13 !important;
-  /* Sidebar ki jagah pakki karne ke liye margin-left */
   margin-left: 260px !important; 
   padding: 40px !important;
   min-height: 100vh !important;
@@ -21,12 +18,17 @@
 
 /* Left side ka main card jisme form hai */
 .formCard {
-  flex: 1 !important;
-  background: #1a1a24 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 20px !important;
-  padding: 40px !important;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3) !important;
+  flex: 1;
+  background: #1a1a24;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px; /* 40px se 32px - thoda compact aur professional */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); /* Zyada smooth shadow */
+  transition: transform 0.3s ease;
+}
+
+.formCard:hover {
+  transform: translateY(-5px); /* Professional subtle lift effect */
 }
 
 /* Right side ka sticky panel */

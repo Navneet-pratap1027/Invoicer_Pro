@@ -15,92 +15,97 @@
   margin: 0 auto;
 }
 
+/* ── Action Bar ── */
 .actionBar {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Sab kuch right align karne ke liye */
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 25px;
   max-width: 850px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Edit button ko left side me push karne ke liye */
-.editBtn {
-  margin-right: auto !important; 
-}
-
-/* Sabhi buttons ka common base style (Size match karne ke liye) */
-.tertiaryBtn, 
-.actionBar button, 
-.actionBar :global(.react-progress-button) button {
-  height: 42px !important; /* Fixed height for all */
-  padding: 0 20px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  border-radius: 8px !important;
-  display: flex;
+/* ── Shared button base ── */
+.editBtn,
+.paymentBtn,
+.primaryBtn,
+.secondaryBtn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  width: auto !important;
-}
-
-/* Specific Styles for Record Payment */
-.paymentBtn {
-  background: transparent !important;
-  color: #3b82f6 !important;
-  border: 1px solid rgba(59, 130, 246, 0.5) !important;
-}
-
-.paymentBtn:hover {
-  background: rgba(59, 130, 246, 0.1) !important;
-}
-
-/* Primary Button (Send to Customer) */
-.primaryBtn :global(.react-progress-button) button {
-  background-color: #3b82f6 !important; /* Solid Blue */
-  color: white !important;
-  border-radius: 8px !important;
-  padding: 10px 20px !important;
-  width: auto !important;
-  min-width: 160px;
-}
-
-/* Secondary Button (Download PDF) */
-.secondaryBtn :global(.react-progress-button) button {
-  background-color: transparent !important;
-  color: #3b82f6 !important;
-  border: 2px solid #3b82f6 !important; /* Outline Blue */
-  border-radius: 8px !important;
-  padding: 8px 20px !important;
-  width: auto !important;
-  min-width: 150px;
-}
-
-/* Tertiary Buttons (Payment & Edit) */
-.tertiaryBtn {
-  background: rgba(255, 255, 255, 0.05);
-  color: #9898b0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 16px;
+  gap: 6px;
+  height: 40px;
+  padding: 0 18px;
+  font-size: 0.875rem;
+  font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
+  border: none;
+  transition: background 0.2s, opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+  font-family: inherit;
 }
 
-.tertiaryBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+.editBtn:disabled,
+.paymentBtn:disabled,
+.primaryBtn:disabled,
+.secondaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* Edit Button alag dikhne ke liye */
+/* Edit — ghost gray, pushed to left via margin-right: auto */
 .editBtn {
-  margin-right: auto; /* Isse Edit button left me chala jayega baaki right me */
+  background: rgba(255,255,255,0.07);
+  color: #9898b0;
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-right: auto;
 }
+.editBtn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+/* Record Payment — blue outline */
+.paymentBtn {
+  background: transparent;
+  color: #3b82f6;
+  border: 1px solid rgba(59,130,246,0.5);
+}
+.paymentBtn:hover { background: rgba(59,130,246,0.1); }
+
+/* Download PDF — blue outline */
+.secondaryBtn {
+  background: transparent;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+  min-width: 140px;
+}
+.secondaryBtn:hover:not(:disabled) { background: rgba(59,130,246,0.1); }
+
+/* Send to Customer — solid blue */
+.primaryBtn {
+  background: #3b82f6;
+  color: #fff;
+  min-width: 155px;
+}
+.primaryBtn:hover:not(:disabled) { background: #2563eb; transform: translateY(-1px); }
+
+/* Success / Error state overrides */
+.btnSuccess { background: #16a34a !important; border-color: #16a34a !important; color: #fff !important; }
+.btnError   { background: #dc2626 !important; border-color: #dc2626 !important; color: #fff !important; }
+
+/* ── Mini spinner inside button ── */
+.spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Status Badge ── */
 .statusBadge {
   display: inline-flex;
   align-items: center;
@@ -112,23 +117,24 @@
 }
 
 .statusPaid {
-  background: rgba(34, 197, 94, 0.15);
+  background: rgba(34,197,94,0.15);
   color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.25);
+  border: 1px solid rgba(34,197,94,0.25);
 }
 
 .statusUnpaid {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(239,68,68,0.15);
   color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(239,68,68,0.25);
 }
 
 .statusPartial {
-  background: rgba(245, 158, 11, 0.15);
+  background: rgba(245,158,11,0.15);
   color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(245,158,11,0.25);
 }
 
+/* ── Invoice Header ── */
 .invoiceHeader {
   display: flex;
   justify-content: space-between;
@@ -165,6 +171,7 @@
   font-weight: 500;
 }
 
+/* ── Items Table ── */
 .itemsTable {
   width: 100%;
   border-collapse: collapse;
@@ -190,6 +197,7 @@
   font-size: 0.9rem;
 }
 
+/* ── Totals ── */
 .totalsSection {
   max-width: 300px;
   margin-left: auto;
@@ -214,11 +222,10 @@
   margin-top: 6px;
 }
 
+/* ── Responsive ── */
 @media only screen and (max-width: 768px) {
-  .pageContainer {
-    padding: 20px 16px 60px;
-  }
-  .invoiceCard {
-    padding: 20px;
-  }
+  .pageContainer { padding: 20px 16px 60px; }
+  .invoiceCard { padding: 20px; }
+  .actionBar { flex-wrap: wrap; }
+  .primaryBtn, .secondaryBtn { min-width: unset; flex: 1; }
 }

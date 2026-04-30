@@ -53,6 +53,12 @@ const generatePDF = async (htmlContent) => {
 
 app.post('/send-pdf', async (req, res) => {
     const { email, company } = req.body
+
+    // ✅ NULL SAFETY: fallback if company not set in Settings
+    const safeCompany = company || {}
+    const companyEmail = safeCompany.email || ''
+    const companyName = safeCompany.businessName || safeCompany.name || 'InvoicerPro'
+
     try {
         const pdfBuffer = await generatePDF(pdfTemplate(req.body))
         const pdfPath = `${__dirname}/invoice.pdf`
@@ -60,9 +66,9 @@ app.post('/send-pdf', async (req, res) => {
         await transporter.sendMail({
             from: `InvoicerPro <hello@invoicerpro.com>`,
             to: `${email}`,
-            replyTo: `${company.email}`,
-            subject: `Invoice from ${company.businessName ? company.businessName : company.name}`,
-            text: `Invoice from ${company.businessName ? company.businessName : company.name}`,
+            replyTo: companyEmail,
+            subject: `Invoice from ${companyName}`,
+            text: `Invoice from ${companyName}`,
             html: emailTemplate(req.body),
             attachments: [{ filename: 'invoice.pdf', path: pdfPath }],
         })

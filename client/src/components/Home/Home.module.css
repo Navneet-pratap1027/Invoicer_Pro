@@ -1,106 +1,88 @@
-/* Landing Page Container with a Gradient Background */
 .pageContainer {
-  background: linear-gradient(15deg, rgb(106, 26, 26) 0%, rgba(43, 27, 91, 0.95) 100%);
-  background-size: 400% 400%;
-  padding: 30px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  animation: gradientFlow 15s ease infinite;
-  position: relative;
-  overflow: hidden;
-  perspective: 1000px;
+    background-color: #0f0f13;
+    min-height: 100vh;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
-@keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-/* .pageContainer {
- background-color: white;
-} */
-
+/* Header - Top Right Positioning */
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  height: 60px;
-  /* background-color: white; */
-  border-bottom: 1px solid rgb(230, 230, 230);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 60px;
 }
+
 .logo {
-  width: 70px;
-  height: 70px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #3b82f6;
 }
 
-.login {
-  border: 1px solid rgb(51, 51, 216);
-  padding: 12px 30px;
-  border-radius: 50px;
-  background-color: white;
-  cursor: pointer;
-  font-size: 15px;
-  outline: none;
-  margin-right: 20px;
-  /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+.authButtons {
+    display: flex;
+    gap: 15px;
 }
 
+/* Hero Section - Text Adjusted */
 .hero {
-  width: 50%;
-  margin: 30px auto;
-  margin-top: 70px;
-  line-height: 60px;
+    text-align: center;
+    margin-top: 80px; 
+    padding: 0 20px;
 }
 
 .hero h1 {
-  font-weight: 500;
-  font-size: 50px;
-  line-height: 50px;
-  text-align: center;
+    font-size: 3.8rem; /* Size kam kiya */
+    font-weight: 800;
+    max-width: 700px; /* Width kam ki */
+    margin: 0 auto 24px auto;
+    line-height: 1.1;
+    letter-spacing: -1px; /* Text tight aur professional lagega */
 }
 
 .paragraph {
-  margin-top: 20px;
-  text-align: center;
-  line-height: 20px;
-  color: gray;
+    font-size: 1.15rem; /* Text size chota kiya */
+    color: #9898b0;
+    max-width: 550px; /* Width adjust ki */
+    margin: 0 auto 40px auto;
+    line-height: 1.5;
+    font-weight: 400;
 }
 
-.imgContainer {
-  margin-top: -80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hero img {
-  width: 1200px;
-  margin: 0px auto;
-}
-
-
-.footerText {
-  border-top: solid 1px rgb(219, 219, 219);
-  width: 80%;
-  margin: 0px auto;
-  text-align: center;
-  padding: 25px;
-  text-align: center;
+/* Button Styling */
+.primaryBtn, .secondaryBtn {
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
 }
 
+.primaryBtn { background: #3b82f6; color: white; }
+.primaryBtn:hover { background: #2563eb; }
 
+.secondaryBtn { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
+.secondaryBtn:hover { background: rgba(255,255,255,0.1); }
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (max-width: 600px) {
+.bigPrimaryBtn {
+    padding: 14px 32px; /* Size balanced kiya */
+    font-size: 1rem;
+    border-radius: 50px;
+    border: none;
+    background: #3b82f6;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-  .hero {
-    width: 80%;
-  }
+.bigPrimaryBtn:hover { transform: scale(1.05); background: #2563eb; }
 
-  .hero img {
-    width: 400px;
-    margin: 70px auto;
-  }
-
+/* Responsive */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.5rem; }
+    .header { padding: 20px; }
 }
