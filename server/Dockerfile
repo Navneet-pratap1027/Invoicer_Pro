@@ -1,14 +1,26 @@
-FROM node:14-alpine AS builder
-ENV NODE_ENV production
+# ── Server Dockerfile ──────────────────────────────────────
+FROM node:18-alpine
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# Puppeteer dependencies
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont
 
-COPY server/package.json .
-RUN npm install
-COPY server/ .
+# Tell Puppeteer to use installed Chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-RUN npm install && npm install nodemon --save-dev
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
 
 EXPOSE 5000
-CMD ["yarn", "start-prod"]
+
+CMD ["node", "index.js"]
