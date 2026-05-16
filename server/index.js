@@ -15,6 +15,7 @@ import invoiceRoutes from './routes/invoices.js'
 import clientRoutes from './routes/clients.js'
 import userRoutes from './routes/userRoutes.js'
 import profile from './routes/profile.js'
+import aiRoutes from './routes/ai.js'            
 import pdfTemplate from './documents/index.js'
 import emailTemplate from './documents/email.js'
 
@@ -30,6 +31,7 @@ app.use('/invoices', invoiceRoutes)
 app.use('/clients', clientRoutes)
 app.use('/users', userRoutes)
 app.use('/profiles', profile)
+app.use('/ai', aiRoutes)                       
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -38,7 +40,6 @@ const transporter = nodemailer.createTransport({
     tls: { rejectUnauthorized: false },
 })
 
-// Puppeteer replaces abandoned html-pdf/PhantomJS
 const generatePDF = async (htmlContent) => {
     const browser = await puppeteer.launch({
         headless: 'new',
@@ -53,12 +54,9 @@ const generatePDF = async (htmlContent) => {
 
 app.post('/send-pdf', async (req, res) => {
     const { email, company } = req.body
-
-    // ✅ NULL SAFETY: fallback if company not set in Settings
     const safeCompany = company || {}
     const companyEmail = safeCompany.email || ''
     const companyName = safeCompany.businessName || safeCompany.name || 'InvoicerPro'
-
     try {
         const pdfBuffer = await generatePDF(pdfTemplate(req.body))
         const pdfPath = `${__dirname}/invoice.pdf`

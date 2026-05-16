@@ -35,11 +35,7 @@ const NavBar = () => {
 
           {/* Dashboard */}
           <li className={styles.navItem}>
-            <Link
-              to="/dashboard"
-              className={`${styles.navLink} ${isActive('/dashboard')}`}
-              data-tooltip="Dashboard"
-            >
+            <Link to="/dashboard" className={`${styles.navLink} ${isActive('/dashboard')}`} data-tooltip="Dashboard">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
@@ -51,27 +47,19 @@ const NavBar = () => {
 
           {/* Create */}
           <li className={styles.navItem}>
-            <a
-              href="/invoice"
-              className={`${styles.navLink} ${isActive('/invoice')}`}
-              data-tooltip="Create"
-            >
+            <Link to="/invoice" className={`${styles.navLink} ${isActive('/invoice')}`} data-tooltip="Create">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
               <span className={styles.linkText}>Create</span>
-            </a>
+            </Link>
           </li>
 
           {/* Invoices */}
           <li className={styles.navItem}>
-            <a
-              href="/invoices"
-              className={`${styles.navLink} ${isActive('/invoices')}`}
-              data-tooltip="Invoices"
-            >
+            <Link to="/invoices" className={`${styles.navLink} ${isActive('/invoices')}`} data-tooltip="Invoices">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -79,16 +67,12 @@ const NavBar = () => {
                 <polyline points="2 12 12 17 22 12" />
               </svg>
               <span className={styles.linkText}>Invoices</span>
-            </a>
+            </Link>
           </li>
 
           {/* Customers */}
           <li className={styles.navItem}>
-            <a
-              href="/customers"
-              className={`${styles.navLink} ${isActive('/customers')}`}
-              data-tooltip="Customers"
-            >
+            <Link to="/customers" className={`${styles.navLink} ${isActive('/customers')}`} data-tooltip="Customers">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -97,16 +81,24 @@ const NavBar = () => {
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
               <span className={styles.linkText}>Customers</span>
-            </a>
+            </Link>
           </li>
 
-          {/* Settings — stays at bottom via margin-top: auto */}
+          {/* ✅ AI Assistant — NEW */}
           <li className={styles.navItem}>
-            <a
-              href="/settings"
-              className={`${styles.navLink} ${isActive('/settings')}`}
-              data-tooltip="Settings"
-            >
+            <Link to="/ai-assistant" className={`${styles.navLink} ${isActive('/ai-assistant')}`} data-tooltip="AI Assistant">
+              {/* Sparkle icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L9.09 9.09 2 12l7.09 2.91L12 22l2.91-7.09L22 12l-7.09-2.91z" />
+              </svg>
+              <span className={styles.linkText}>AI Assistant</span>
+            </Link>
+          </li>
+
+          {/* Settings — pinned to bottom */}
+          <li className={styles.navItem}>
+            <Link to="/settings" className={`${styles.navLink} ${isActive('/settings')}`} data-tooltip="Settings">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="3" />
@@ -126,7 +118,7 @@ const NavBar = () => {
                   a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
               </svg>
               <span className={styles.linkText}>Settings</span>
-            </a>
+            </Link>
           </li>
 
         </ul>
