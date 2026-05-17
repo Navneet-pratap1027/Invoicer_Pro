@@ -19,11 +19,28 @@ const NavBar = () => {
       <nav className={styles.navbar}>
         <ul className={styles.navbarNav}>
 
-          {/* Logo */}
-          <li className={styles.logo}>
-            <a href="/dashboard" className={styles.navLink}>
-              <span className={styles.logoText}>
-                <img style={{ width: '36px' }} src="https://i.postimg.cc/hGZKzdkS/logo.png" alt="arc-invoice" />
+          {/* Logo — ✅ Directly using your new favicon.ico.png asset to show the full beautiful circle layout */}
+          <li className={styles.logo} style={{ padding: '0.4rem 0.5rem' }}>
+            <a href="/dashboard" className={styles.navLink} style={{ padding: '0.5rem', display: 'flex', alignItems: 'center' }}>
+              <span className={styles.logoText} style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '44px',
+                height: '44px',
+                flexShrink: 0
+              }}>
+                <img 
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'contain',
+                    transform: 'scale(1.4)', // Slightly scaled up so that it looks bold and distinct like before
+                    borderRadius: '50%'
+                  }} 
+                  src={`${process.env.PUBLIC_URL}/icons/favicon.ico.png`} 
+                  alt="InvoicerPro-NewLogo" 
+                />
               </span>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -84,10 +101,9 @@ const NavBar = () => {
             </Link>
           </li>
 
-          {/* ✅ AI Assistant — NEW */}
+          {/* AI Assistant */}
           <li className={styles.navItem}>
             <Link to="/ai-assistant" className={`${styles.navLink} ${isActive('/ai-assistant')}`} data-tooltip="AI Assistant">
-              {/* Sparkle icon */}
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2L9.09 9.09 2 12l7.09 2.91L12 22l2.91-7.09L22 12l-7.09-2.91z" />
@@ -96,7 +112,7 @@ const NavBar = () => {
             </Link>
           </li>
 
-          {/* Settings — pinned to bottom */}
+          {/* Settings */}
           <li className={styles.navItem}>
             <Link to="/settings" className={`${styles.navLink} ${isActive('/settings')}`} data-tooltip="Settings">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

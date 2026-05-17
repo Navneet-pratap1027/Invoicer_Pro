@@ -16,7 +16,7 @@ const InvoiceSchema = mongoose.Schema({
     totalAmountReceived: { type: Number, default: 0 },
     client: { name: String, email: String, phone: String, address: String },
     paymentRecords: [{ amountPaid: Number, datePaid: Date, paymentMethod: String, note: String, paidBy: String }],
-    createdAt: { type: Date, default: () => new Date() },   // Fixed: arrow fn runs per-document
+    createdAt: { type: Date, default: () => new Date() },  
 })
 
 const InvoiceModel = mongoose.model('InvoiceModel', InvoiceSchema)

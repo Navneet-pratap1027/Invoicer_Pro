@@ -39,7 +39,7 @@ const headerStyle = { textAlign: 'center', fontWeight: 'bold', backgroundColor: 
 const Invoices = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory(); // ✅ Fixed syntax
+  const history = useHistory(); 
   const user = JSON.parse(localStorage.getItem('profile'));
   const rows = useSelector(state => state.invoices.invoices);
   const isLoading = useSelector(state => state.invoices.isLoading);
@@ -106,7 +106,6 @@ const Invoices = () => {
                 <TableRow key={row._id} hover>
                   <TableCell className={classes.tableCell}>{row.invoiceNumber}</TableCell>
                   <TableCell className={classes.tableCell}>{row?.client?.name || 'No Name'}</TableCell>
-                  {/* ✅ Currency symbol handle kiya */}
                   <TableCell className={classes.tableCell}>₹ {row.total?.toLocaleString()}</TableCell>
                   <TableCell className={classes.tableCell}>{moment(row.dueDate).format('DD MMM YYYY')}</TableCell>
                   <TableCell className={classes.tableCell}>

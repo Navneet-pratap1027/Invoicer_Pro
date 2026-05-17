@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-// Sahi path: 'core' folder se styles aur components aayenge
 import { withStyles } from '@material-ui/core/styles'; 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,8 +8,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-
-// Sirf CloseIcon 'icons' folder se aayega
 import CloseIcon from '@material-ui/icons/Close';
 
 import { useDispatch } from 'react-redux';

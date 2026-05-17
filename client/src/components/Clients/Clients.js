@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-// ✅ Sahi path: 'core' folder se styles aayenge
 import { makeStyles } from '@material-ui/core/styles'; 
 import {
   Table, TableBody, TableCell, TableHead, TableContainer, TableFooter,
@@ -151,7 +150,7 @@ const Clients = ({ setOpen, setCurrentId, clients }) => {
         <Dialog open={deleteDialogOpen} onClose={handleCancelDelete}>
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogContent>
-            <Typography>Are you sure you want to delete this client?</Typography>
+            <p>Are you sure you want to delete this client?</p>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCancelDelete} color="primary">Cancel</Button>

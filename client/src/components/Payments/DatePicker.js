@@ -1,6 +1,5 @@
 import 'date-fns';
 import React from 'react';
-// ✅ Sahi path: Grid hamesha 'core' se aayega
 import Grid from '@material-ui/core/Grid'; 
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -11,7 +10,6 @@ import {
 export default function MaterialUIPickers({ setSelectedDate, selectedDate }) {
   
   const handleDateChange = (date) => {
-    // Safety check: Agar date valid hai tabhi convert karein
     if (date) {
       setSelectedDate(date.toISOString());
     }
@@ -33,7 +31,6 @@ export default function MaterialUIPickers({ setSelectedDate, selectedDate }) {
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}
-          // Style fix: Input styling ko dark theme ke hisaab se clean rakha hai
           InputProps={{
             style: {
               padding: '10px 0',

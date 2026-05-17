@@ -37,7 +37,10 @@ const Invoice = () => {
     const [invoiceData, setInvoiceData] = useState(initialState);
     const [rates, setRates] = useState(0);
     const [vat, setVat] = useState(0);
-    const [currency, setCurrency] = useState(currencies[0].value);
+    
+    // ✅ Safely look up INR from your lookup array or fall back cleanly to 'INR' string string text
+    const [currency, setCurrency] = useState(currencies.find(c => c.value === 'INR')?.value || 'INR');
+    
     const [subTotal, setSubTotal] = useState(0);
     const [total, setTotal] = useState(0);
     const [selectedDate, setSelectedDate] = useState(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -71,27 +74,28 @@ const Invoice = () => {
             setType(invoice.type);
             setStatus(invoice.status);
             setSelectedDate(invoice.dueDate);
+            if (invoice.currency) setCurrency(invoice.currency);
         }
     }, [invoice]);
 
     useEffect(() => { setStatus(type === 'Receipt' ? 'Paid' : 'Unpaid'); }, [type]);
 
- useEffect(() => {
-    // Subtotal calculate 
-    const sub = invoiceData.items.reduce((acc, item) => 
-        acc + (Number(item.quantity) * Number(item.unitPrice) - 
-        (Number(item.quantity) * Number(item.unitPrice) * Number(item.discount) / 100)), 0
-    );
+    useEffect(() => {
+        // Subtotal calculate 
+        const sub = invoiceData.items.reduce((acc, item) => 
+            acc + (Number(item.quantity) * Number(item.unitPrice) - 
+            (Number(item.quantity) * Number(item.unitPrice) * Number(item.discount) / 100)), 0
+        );
 
-    //  Tax
-    const calculatedVat = (Number(rates) / 100) * sub;
-    const finalTotal = sub + calculatedVat;
+        //  Tax
+        const calculatedVat = (Number(rates) / 100) * sub;
+        const finalTotal = sub + calculatedVat;
 
-    // 3. States update
-    setSubTotal(sub.toFixed(2));
-    setVat(calculatedVat.toFixed(2));
-    setTotal(finalTotal.toFixed(2));
-}, [invoiceData, rates]);
+        // States update
+        setSubTotal(sub.toFixed(2));
+        setVat(calculatedVat.toFixed(2));
+        setTotal(finalTotal.toFixed(2));
+    }, [invoiceData, rates]);
 
     const handleChange = (index, e) => {
         const values = [...invoiceData.items];
@@ -194,10 +198,24 @@ const Invoice = () => {
                     </div>
                     <div className={styles.totalRowBold}>
                         <span>Total</span>
+                        {/* ✅ Renders current dynamic dropdown selection value instantly */}
                         <span style={{ color: '#7c6af7' }}>{currency} {toCommas(total)}</span>
                     </div>
 
                     <div className={styles.sectionTitle} style={{ marginTop: '30px' }}>Invoice Settings</div>
+                    
+                    {/* ✅ New dynamic searchable autocomplete filter selector drop component */}
+                    <Autocomplete
+                        options={currencies || []}
+                        getOptionLabel={(option) => `${option.label} (${option.value})`}
+                        value={currencies.find(c => c.value === currency) || null}
+                        onChange={(event, newValue) => {
+                            if (newValue) setCurrency(newValue.value);
+                        }}
+                        renderInput={(params) => <TextField {...params} label="Currency" variant="outlined" />}
+                        style={{ marginBottom: '20px' }}
+                    />
+
                     <TextField
                         fullWidth
                         label="Tax Rate (%)"

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
-// ✅ Sahi path: 'core' folder se styles aur components aayenge
+
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { TextField, Grid } from '@material-ui/core';
 
-// ✅ Icons hamesha 'icons' folder se
+
 import CloseIcon from '@material-ui/icons/Close';
 
 import DatePicker from './DatePicker';

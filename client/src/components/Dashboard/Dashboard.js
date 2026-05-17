@@ -48,6 +48,9 @@ const Dashboard = () => {
   const totalAmount = invoices.reduce((t, inv) => t + inv.total, 0)
   const totalPending = totalAmount - totalPaid
 
+  // ✅ Automatically get active currency string from database records, fallback to Rupee symbol
+  const activeCurrency = invoices?.[0]?.currency || '₹'
+
   let paymentHistory = []
   invoices.forEach((inv) => { if (inv.paymentRecords) paymentHistory = [...paymentHistory, ...inv.paymentRecords] })
   const sortedHistory = [...paymentHistory].sort((a, b) => new Date(b.datePaid) - new Date(a.datePaid))
@@ -65,16 +68,16 @@ const Dashboard = () => {
       </div>
 
       <div className={styles.statsGrid}>
-        <StatCard label="Total Received" value={`$${toCommas(totalPaid)}`} icon={<IconCheck />} accent="accentGreen" />
-        <StatCard label="Pending" value={`$${toCommas(totalPending)}`} icon={<IconPie />} accent="accentOrange" />
-        <StatCard label="Invoiced" value={`$${toCommas(totalAmount)}`} icon={<IconBag />} accent="accentBlue" />
+        {/* ✅ Updated value strings below to utilize activeCurrency dynamically instead of hardcoded $ */}
+        <StatCard label="Total Received" value={`${activeCurrency}${toCommas(totalPaid)}`} icon={<IconCheck />} accent="accentGreen" />
+        <StatCard label="Pending" value={`${activeCurrency}${toCommas(totalPending)}`} icon={<IconPie />} accent="accentOrange" />
+        <StatCard label="Invoiced" value={`${activeCurrency}${toCommas(totalAmount)}`} icon={<IconBag />} accent="accentBlue" />
         <StatCard label="Invoices" value={invoices.length} icon={<IconCard />} />
         <StatCard label="Paid" value={paid.length} icon={<IconCheck />} accent="accentGreen" sub={`${invoices.length ? Math.round((paid.length / invoices.length) * 100) : 0}%`} />
         <StatCard label="Partial" value={partial.length} icon={<IconPie />} accent="accentOrange" />
         <StatCard label="Unpaid" value={unpaid.length} icon={<IconFrown />} accent="accentRed" />
         <StatCard label="Overdue" value={overDue.length} icon={<IconClock />} accent="accentRed" />
       </div>
-      {/* ... Baki chart aur table code waisa hi rahega */}
     </div>
   )
 }
