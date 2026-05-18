@@ -1,6 +1,6 @@
 import axios from 'axios'
-
-const API = axios.create({ baseURL: process.env.REACT_APP_API })
+const baseURL = process.env.REACT_APP_API || 'http://localhost:5000';
+const API = axios.create({ baseURL: baseURL })
 
 API.interceptors.request.use((req) => {
     if(localStorage.getItem('profile')) {
@@ -8,7 +8,6 @@ API.interceptors.request.use((req) => {
     }
     return req
 })
-
 export const fetchInvoice =(id) => API.get(`/invoices/${id}`)
 export const addInvoice =( invoice ) => API.post('/invoices', invoice)
 export const updateInvoice = (id, updatedInvoice) => API.patch(`/invoices/${id}`, updatedInvoice)

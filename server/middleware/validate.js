@@ -12,7 +12,6 @@ export const validateInvoice = (req, res, next) => {
     }
     next()
 }
-
 export const validateClient = (req, res, next) => {
     const { name, email } = req.body
     if (!name || name.trim() === '') {
@@ -23,15 +22,21 @@ export const validateClient = (req, res, next) => {
     }
     next()
 }
-
+// FULLY FIXED SIGNUP VALIDATION
 export const validateSignup = (req, res, next) => {
-    const { email, password, confirmPassword, firstName, lastName } = req.body
-    if (!firstName || !lastName) {
-        return res.status(400).json({ message: 'First and last name are required' })
+    const { email, password, confirmPassword, firstName, lastName, name } = req.body
+    // Flexible Name Verification: Check text structures gracefully
+    const fName = firstName ? firstName.trim() : '';
+    const lName = lastName ? lastName.trim() : '';
+    const fullName = name ? name.trim() : '';
+    if (!fName && !lName && !fullName) {
+        return res.status(400).json({ message: 'Name details are required' })
     }
+    // Email regex formatting validation
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return res.status(400).json({ message: 'Valid email is required' })
-    }
+    } 
+    // Strict pattern matching structure check
     if (!password || password.length < 6) {
         return res.status(400).json({ message: 'Password must be at least 6 characters' })
     }
@@ -40,7 +45,7 @@ export const validateSignup = (req, res, next) => {
     }
     next()
 }
-
+// SIGN IN VALIDATION
 export const validateSignin = (req, res, next) => {
     const { email, password } = req.body
     if (!email || !password) {
