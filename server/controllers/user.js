@@ -3,103 +3,72 @@ import nodemailer from 'nodemailer'
 import crypto from 'crypto'
 import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
-
 dotenv.config()
-const SECRET = process.env.JWT_SECRET;
+const SECRET = process.env.JWT_SECRET || process.env.SECRET;
 const HOST =  process.env.SMTP_HOST
 const PORT =  process.env.SMTP_PORT
 const USER =  process.env.SMTP_USER
 const PASS =  process.env.SMTP_PASS
-
 import User from '../models/userModel.js'
 import ProfileModel from '../models/ProfileModel.js';
-
-
+// ==========================================
+// 1. SIGN IN CONTROLLER
+// ==========================================
 export const signin = async (req, res)=> {
-    const { email, password } = req.body //Coming from formData
+    const { email, password } = req.body // Coming from formData
 
     try {
         const existingUser = await User.findOne({ email })
-        
-        //get userprofile and append to login auth detail
-        const userProfile = await ProfileModel.findOne({ userId: existingUser?._id })
-
         if(!existingUser) return res.status(404).json({ message: "User doesn't exist" })
-
-        const isPasswordCorrect  = await bcrypt.compare(password, existingUser.password)
-
+        const isPasswordCorrect = await bcrypt.compare(password, existingUser.password)
         if(!isPasswordCorrect) return res.status(400).json({message: "Invalid credentials"})
-
-        //If crednetials are valid, create a token for the user
+        const userProfile = await ProfileModel.findOne({ userId: existingUser._id })
+        // Token generation
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, SECRET, { expiresIn: "30d" })
-        
-        //Then send the token to the client/frontend
+        // Response send to client
         res.status(200).json({ result: existingUser, userProfile, token })
-
     } catch (error) {
+        console.error("Signin Error:", error)
         res.status(500).json({ message: "Something went wrong"})
     }
 }
-
-
-
+// 2. SIGN UP CONTROLLER (FIXED)
 export const signup = async (req, res)=> {
     const { email, password, confirmPassword, firstName, lastName, bio } = req.body
-
     try {
         const existingUser = await User.findOne({ email })
-        const userProfile = await ProfileModel.findOne({ userId: existingUser?._id })
-
-        if(existingUser) return res.status(400).json({ message: "User already exist" })
-
-        if(password !== confirmPassword) return res.status(400).json({ message: "Password don't match" })
-        
+        if(existingUser) return res.status(400).json({ message: "User already exists" })
+        // Password matching check
+        if(password !== confirmPassword) return res.status(400).json({ message: "Passwords don't match" })
+        // Encrypt the password
         const hashedPassword = await bcrypt.hash(password, 12)
-
+        // Create new user in Database
         const result = await User.create({ email, password: hashedPassword, name: `${firstName} ${lastName}`, bio })
-
+        const userProfile = null 
+        // Generate dynamic token
         const token = jwt.sign({ email: result.email, id: result._id }, SECRET, { expiresIn: "1h" })
-        
         res.status(200).json({ result, userProfile, token })
 
     } catch (error) {
+        console.error("Signup Error Details:", error)
         res.status(500).json({ message: "Something went wrong"}) 
     }
 }
-
-
-// export const updateProfile = async (req, res) => {
-//     const formData = req.body
-//     const { id: _id } = req.params
-//     console.log(formData)
-
-//     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No user with this id found')
-
-//     const updatedUser = await User.findByIdAndUpdate(_id, formData, {new: true})
-//     res.json(updatedUser)
-// }
-
-
-
-
+// 3. FORGOT PASSWORD CONTROLLER
 export const forgotPassword = (req,res)=>{
-
     const { email } = req.body
-  
-       // NODEMAILER TRANSPORT FOR SENDING POST NOTIFICATION VIA EMAIL
-        const transporter = nodemailer.createTransport({
-            host: HOST,
-            port : PORT,
-            auth: {
+    // NODEMAILER TRANSPORT FOR SENDING POST NOTIFICATION VIA EMAIL
+    const transporter = nodemailer.createTransport({
+        host: HOST,
+        port : PORT,
+        auth: {
             user: USER,
             pass: PASS
-            },
-            tls:{
-                rejectUnauthorized:false
-            }
-        })
-  
-  
+        },
+        tls:{
+            rejectUnauthorized:false
+        }
+    })
     crypto.randomBytes(32,(err,buffer)=>{
         if(err){
             console.log(err)
@@ -119,10 +88,10 @@ export const forgotPassword = (req,res)=>{
                     subject:"Password reset request",
                     html:`
                     <p>You requested for password reset from InvoicerPro Invoicing Generation App</p>
-                    <h5>Please click <a href="https://invoicerpro.com/reset/${token}">InvoicerPro Password Reet</a> to reset your password</h5>
+                    <h5>Please click <a href="https://invoicerpro.com/reset/${token}">InvoicerPro Password Reset</a> to reset your password</h5>
                     <p>Link not clickable?, copy and paste the following url in your address bar.</p>
                     <p>https://invoicerpro.com/reset/${token}</p>
-                    <P>If this was a mistake, just ignore this email and nothing will happen.</P>
+                    <p>If this was a mistake, just ignore this email and nothing will happen.</p>
                     `
                 })
                 res.json({message:"check your email"})
@@ -130,13 +99,12 @@ export const forgotPassword = (req,res)=>{
   
         })
     })
-  }
-  
-  
-  
-  export const resetPassword = (req,res)=>{
+}
+// 4. RESET PASSWORD CONTROLLER
+export const resetPassword = (req,res)=>{
     const newPassword = req.body.password
     const sentToken = req.body.token
+    
     User.findOne({resetToken:sentToken,expireToken:{$gt:Date.now()}})
     .then(user=>{
         if(!user){
@@ -153,4 +121,4 @@ export const forgotPassword = (req,res)=>{
     }).catch(err=>{
         console.log(err)
     })
-  }
+}
