@@ -34,15 +34,16 @@ const styles = (theme) => ({
   },
   inputField: {
     display: 'block',
-    padding: '1.4rem 0.75rem',
+    padding: '1.2rem 0.75rem', // Slightly reduced padding for compact look
     width: '100%',
-    fontSize: '0.8rem',
+    fontSize: '0.85rem',
     lineHeight: 1.25,
     color: '#55595c',
     backgroundColor: '#fff',
     borderBottom: '1px solid #eee',
     borderRadius: '3px',
     marginBottom: '15px',
+    boxSizing: 'border-box',
     transition: 'border-color 0.3s ease-in-out',
     '&:focus': {
       outline: '0',
@@ -53,9 +54,11 @@ const styles = (theme) => ({
     },
   },
   saveButton: {
-    marginRight: '25px',
+    marginRight: '20px',
     backgroundColor: '#1976D2',
     color: '#fff',
+    textTransform: 'none',
+    fontWeight: 'bold',
     '&:hover': {
       backgroundColor: '#1565c0',
     },
@@ -78,7 +81,7 @@ const DialogTitle = withStyles(styles)((props) => {
 
 const DialogContent = withStyles((theme) => ({
   root: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(3),
   },
 }))(MuiDialogContent);
 
@@ -107,6 +110,7 @@ const AddClient = ({ setOpen, open, classes }) => {
 
   const handleSubmitClient = (e) => {
     e.preventDefault();
+    if (!clientData.name || !clientData.email || !clientData.phone) return;
     dispatch(createClient(clientData, openSnackbar));
     clear();
     handleClose();
@@ -122,7 +126,8 @@ const AddClient = ({ setOpen, open, classes }) => {
 
   return (
     <div>
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} fullWidth>
+      {/* ✅ Max Width set to xs to keep modal card size completely normal and compact */}
+      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} fullWidth maxWidth="xs">
         <DialogTitle id="customized-dialog-title" onClose={handleClose} className={classes.dialogTitle}>
           New Customer
         </DialogTitle>
@@ -135,31 +140,34 @@ const AddClient = ({ setOpen, open, classes }) => {
               type="text"
               onChange={(e) => setClientData({ ...clientData, name: e.target.value })}
               value={clientData.name}
+              required
             />
             <input
               placeholder="Email"
               className={classes.inputField}
               name="email"
-              type="text"
+              type="email"
               onChange={(e) => setClientData({ ...clientData, email: e.target.value.toLowerCase().trim() })}
               value={clientData.email}
+              required
             />
             
-            {/* ✅ FIXED STRICT 10-DIGIT PHONE INPUT */}
+            {/* ✅ FIXED STRICT NUMERIC ONLY AND EXACT 10 DIGITS VISIBLE ENFORCEMENT */}
             <input
-              placeholder="Phone"
+              placeholder="Phone (10 Digits)"
               className={classes.inputField}
               name="phone"
-              type="text"
-              maxLength={10}
-              inputMode="numeric"
+              type="tel"            // Strictly blocks desktop character arrays and opens numpad on mobile
+              maxLength={10}        // Stops input expansion over line boundaries
+              inputMode="numeric"   // Strict semantic declaration
               pattern="[0-9]*"
               onChange={(e) => {
-                // Sirf numbers allow karega aur strict max-length 10 par slice kar dega
+                // Instantly filters non-digits and slices exactly at 10 indices
                 const val = e.target.value.replace(/\D/g, '').slice(0, 10);
                 setClientData({ ...clientData, phone: val });
               }}
               value={clientData.phone}
+              required
             />
             
             <input
