@@ -1,13 +1,15 @@
 name: InvoicerPro CI/CD
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
   # ── 1. BUILD & TEST
   test:
-    name: 🧪 Build & Test
+    name: Build & Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,14 +20,22 @@ jobs:
         with:
           node-version: '18'
 
+      #  SKIP massive Chromium downloads 
       - name: Install server dependencies
-        run: cd server && npm ci
+        run: |
+          cd server
+          export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+          npm ci --no-audit --no-fund
 
       - name: Install client dependencies
-        run: cd client && npm install --legacy-peer-deps
+        run: |
+          cd client
+          npm install --legacy-peer-deps --no-audit --no-fund
 
       - name: Build client
-        run: cd client && npm run build
+        run: |
+          cd client
+          npm run build
         env:
           NODE_OPTIONS: --openssl-legacy-provider
           REACT_APP_API: ${{ secrets.REACT_APP_API }}
@@ -35,11 +45,10 @@ jobs:
 
   # ── 2. DOCKER BUILD & PUSH 
   docker:
-    name:  Build & Push Docker Image
+    name: Build & Push Docker Image
     runs-on: ubuntu-latest
     needs: test
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -65,12 +74,13 @@ jobs:
 
   # ── 3. DEPLOY TO RENDER 
   deploy:
-    name: 🚀 Deploy to Render
+    name: Deploy to Render
     runs-on: ubuntu-latest
     needs: docker
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Deploy server to Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_SERVER }}"
+
       - name: Notify success
-        run: echo " InvoicerPro deployed at $(date)"
+        run: echo " InvoicerPro deployed successfully at $(date)"
