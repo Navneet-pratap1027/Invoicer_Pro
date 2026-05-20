@@ -141,17 +141,27 @@ const AddClient = ({ setOpen, open, classes }) => {
               className={classes.inputField}
               name="email"
               type="text"
-              onChange={(e) => setClientData({ ...clientData, email: e.target.value })}
+              onChange={(e) => setClientData({ ...clientData, email: e.target.value.toLowerCase().trim() })}
               value={clientData.email}
             />
+            
+            {/* ✅ FIXED STRICT 10-DIGIT PHONE INPUT */}
             <input
               placeholder="Phone"
               className={classes.inputField}
               name="phone"
               type="text"
-              onChange={(e) => setClientData({ ...clientData, phone: e.target.value })}
+              maxLength={10}
+              inputMode="numeric"
+              pattern="[0-9]*"
+              onChange={(e) => {
+                // Sirf numbers allow karega aur strict max-length 10 par slice kar dega
+                const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                setClientData({ ...clientData, phone: val });
+              }}
               value={clientData.phone}
             />
+            
             <input
               placeholder="Address"
               className={classes.inputField}
