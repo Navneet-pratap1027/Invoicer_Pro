@@ -3,7 +3,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
-import puppeteer from 'puppeteer'
+import htmlPdf from 'html-pdf-node'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import fs from 'fs'
@@ -15,7 +15,7 @@ import invoiceRoutes from './routes/invoices.js'
 import clientRoutes from './routes/clients.js'
 import userRoutes from './routes/userRoutes.js'
 import profile from './routes/profile.js'
-import aiRoutes from './routes/ai.js'            
+import aiRoutes from './routes/ai.js'
 import pdfTemplate from './documents/index.js'
 import emailTemplate from './documents/email.js'
 
@@ -31,7 +31,7 @@ app.use('/invoices', invoiceRoutes)
 app.use('/clients', clientRoutes)
 app.use('/users', userRoutes)
 app.use('/profiles', profile)
-app.use('/ai', aiRoutes)                       
+app.use('/ai', aiRoutes)
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -40,22 +40,15 @@ const transporter = nodemailer.createTransport({
     tls: { rejectUnauthorized: false },
 })
 
+// ✅ Replaced Puppeteer with html-pdf-node (works on Render free tier)
 const generatePDF = async (htmlContent) => {
-    const browser = await puppeteer.launch({
-        headless: 'new',
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--single-process',
-            '--no-zygote',
-        ],
-    })
-    const page = await browser.newPage()
-    await page.setContent(htmlContent, { waitUntil: 'networkidle0' })
-    const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true })
-    await browser.close()
+    const file = { content: htmlContent }
+    const options = {
+        format: 'A4',
+        printBackground: true,
+        margin: { top: '20px', right: '20px', bottom: '20px', left: '20px' },
+    }
+    const pdfBuffer = await htmlPdf.generatePdf(file, options)
     return pdfBuffer
 }
 
